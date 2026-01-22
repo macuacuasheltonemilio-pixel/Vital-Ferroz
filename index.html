@@ -23,7 +23,7 @@
     <div id="client-site">
         <header class="py-10 text-center border-b border-gray-800">
             <h1 class="text-5xl font-black neon-text uppercase tracking-tighter">VIGOR FERROZ</h1>
-            <p class="text-gray-400 mt-2 font-medium italic">Resultados em apenas 14 dias de uso correto!</p>
+            <p class="text-gray-400 mt-2 font-medium italic">Resultados em apenas 14 dias de uso correto! [cite: 2026-01-21]</p>
         </header>
 
         <main class="max-w-4xl mx-auto p-4">
@@ -48,29 +48,28 @@
                     <input type="text" id="bairro" placeholder="Nome do Bairro" class="w-full p-4 input-dark rounded-xl outline-none text-white" required>
 
                     <div class="md:col-span-2 text-center py-6">
-                        <div class="text-6xl font-black neon-text mb-2">999 MT</div>
-                        <p class="text-gray-400 mb-6 text-sm italic">Entrega discreta e aumento de até 12cm.</p>
-                        <button type="submit" id="btnSubmit" class="w-full bg-[#39ff14] text-black font-black py-6 rounded-2xl text-2xl uppercase hover:scale-105 transition">CONFIRMAR PEDIDO</button>
+                        <div class="text-6xl font-black neon-text mb-2">999 MT [cite: 2026-01-21]</div>
+                        <p class="text-gray-400 mb-6 text-sm italic">Entrega discreta e aumento de até 12cm. [cite: 2026-01-21]</p>
+                        <button type="submit" id="btnSubmit" class="w-full bg-[#39ff14] text-black font-black py-6 rounded-2xl text-2xl uppercase hover:scale-105 transition shadow-[0_0_20px_#39ff14]">CONFIRMAR PEDIDO AGORA</button>
                     </div>
                 </form>
             </section>
 
-            <section class="mb-12 mt-8">
-                <h2 class="text-center text-2xl font-black mb-6 uppercase tracking-widest italic neon-text">⭐ Resultados de Clientes em MZ ⭐</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-card p-6 rounded-2xl border border-gray-800 shadow-lg">
-                        <div class="flex text-yellow-500 mb-2">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <p class="text-sm italic text-gray-300">"Senti os resultados logo nos primeiros 14 dias. O aumento de tamanho é real e a minha parceira notou logo a diferença."</p>
-                        <p class="text-[#39ff14] font-bold mt-3 text-xs uppercase">- Cliente Satisfeito, Maputo</p>
+            <section id="resultados" class="bg-card p-8 rounded-3xl border border-gray-800 shadow-2xl mb-8">
+                <h2 class="text-center text-xl font-bold mb-8 uppercase tracking-widest">
+                    <span class="text-white">RESULTADOS DE CLIENTES</span> <span class="bg-[#39ff14] text-black px-2">REAIS</span>
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="border border-gray-700 p-6 rounded-xl bg-[#0d1117]">
+                        <h3 class="font-bold text-lg mb-2">Sr. Alberto M. (Maputo)</h3>
+                        <p class="text-gray-400 italic text-sm">"Após 14 dias o resultado é impressionante. O aumento foi real e a minha parceira está muito satisfeita."</p>
                     </div>
-                    <div class="bg-card p-6 rounded-2xl border border-gray-800 shadow-lg">
-                        <div class="flex text-yellow-500 mb-2">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <p class="text-sm italic text-gray-300">"A entrega em Maputo foi super discreta. O chá funciona mesmo contra a ejaculação precoce e sinto-me com muito mais energia."</p>
-                        <p class="text-[#39ff14] font-bold mt-3 text-xs uppercase">- Cliente, Matola</p>
+                    
+                    <div class="border border-gray-700 p-6 rounded-xl bg-[#0d1117]">
+                        <h3 class="font-bold text-lg mb-2">J. Luvumbo (Matola)</h3>
+                        <p class="text-gray-400 italic text-sm">"Entrega discreta e rápida. O produto funciona mesmo para quem sofre de ejaculação precoce."</p>
+                        <div class="text-[#39ff14] mt-2 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                     </div>
                 </div>
             </section>
@@ -113,7 +112,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Carregar Foto
+        // Foto do Produto via Firebase
         db.ref('configuracao/foto').on('value', (snap) => {
             if(snap.val()) document.getElementById('fotoProduto').src = snap.val();
         });
@@ -127,13 +126,12 @@
             }
         }
 
-        // Salvar Pedido com texto interligado
+        // Script de Envio de Pedido
         document.getElementById('orderForm').onsubmit = async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSubmit');
             const b = document.getElementById('bairro').value;
             const p = document.getElementById('provincia').value;
-            
             btn.disabled = true; btn.innerText = "A ENVIAR...";
             
             const pedido = {
@@ -149,9 +147,10 @@
                 alert("✅ ENCOMENDA RECEBIDA!");
                 this.reset();
             } catch (error) { alert("Erro de conexão."); }
-            btn.disabled = false; btn.innerText = "CONFIRMAR PEDIDO";
+            btn.disabled = false; btn.innerText = "CONFIRMAR PEDIDO AGORA";
         };
 
+        // Funções do Painel Admin
         function carregarPedidos() {
             db.ref('pedidos').on('value', (snapshot) => {
                 const table = document.getElementById('adminTable');
