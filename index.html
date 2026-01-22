@@ -6,111 +6,60 @@
     <title>VIGOR FERROZ | Oficial Moçambique</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     <style>
-        body { background-color: #0b0f12; color: white; scroll-behavior: smooth; font-family: sans-serif; }
+        body { background-color: #0b0f12; color: white; font-family: sans-serif; }
         .neon-text { color: #39ff14; text-shadow: 0 0 10px #39ff14; }
         .admin-hidden { display: none; }
         .bg-card { background-color: #161b22; }
         .input-dark { background-color: #0d1117; border: 1px solid #30363d; }
-        @keyframes pulse-red { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        .stock-pulse { animation: pulse-red 2s infinite; color: #ff4444; }
-        
-        /* Cores dos Estados da Venda */
-        .status-pendente { background-color: #fbbf24; color: #000; } 
-        .status-fechado { background-color: #22c55e; color: #fff; }  
-        .status-cancelado { background-color: #ef4444; color: #fff; } 
     </style>
 </head>
 <body>
-
     <div id="client-site">
         <header class="py-10 text-center border-b border-gray-800">
-            <h1 class="text-5xl font-black neon-text uppercase tracking-tighter">VIGOR FERROZ</h1>
-            <p class="text-gray-400 mt-2 font-medium">Potência e Energia Imbatíveis para o homem moderno.</p>
+            <h1 class="text-5xl font-black neon-text uppercase">VIGOR FERROZ</h1>
+            <p class="text-gray-400 mt-2">Solução 100% natural com resultados em 14 dias!</p>
         </header>
 
         <main class="max-w-4xl mx-auto p-4">
-            <div class="mt-6 text-center">
-                <p class="text-sm font-bold stock-pulse">⚠️ ATENÇÃO: Apenas 5 unidades restantes para entrega imediata!</p>
-            </div>
-
-            <section class="mt-8 bg-card p-8 rounded-3xl border border-gray-800 shadow-2xl mb-8">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold text-[#39ff14]">TRATAMENTO COMPLETO</h2>
-                    <p class="text-gray-400">Aumente até 12cm e acabe com a ejaculação precoce.</p>
-                </div>
-
+            <section class="mt-8 bg-card p-8 rounded-3xl border border-gray-800 shadow-2xl">
+                <h2 class="text-center text-3xl font-bold text-[#39ff14] mb-8">ENCOMENDAR AGORA</h2>
                 <form id="orderForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="nome" placeholder="Nome Completo" class="w-full p-4 input-dark rounded-xl outline-none focus:border-[#39ff14] text-white" required>
-                    <input type="number" id="contacto" placeholder="Contacto para Chamadas" class="w-full p-4 input-dark rounded-xl outline-none focus:border-[#39ff14] text-white" required>
-                    
-                    <select id="provincia" onchange="atualizarBairroPlaceholder()" class="w-full p-4 input-dark rounded-xl outline-none text-white" required>
-                        <option value="">Selecione a Província...</option>
+                    <input type="text" id="nome" placeholder="Seu Nome" class="w-full p-4 input-dark rounded-xl text-white" required>
+                    <input type="number" id="contacto" placeholder="Seu Contacto" class="w-full p-4 input-dark rounded-xl text-white" required>
+                    <select id="provincia" class="w-full p-4 input-dark rounded-xl text-white" required>
+                        <option value="">Sua Província...</option>
                         <option>Maputo Cidade</option><option>Maputo Província</option><option>Gaza</option>
                         <option>Inhambane</option><option>Sofala</option><option>Manica</option>
                         <option>Tete</option><option>Zambézia</option><option>Nampula</option>
                         <option>Niassa</option><option>Cabo Delgado</option>
                     </select>
-
-                    <input type="text" id="bairro" placeholder="Bairro ou Distrito para entrega" class="w-full p-4 input-dark rounded-xl outline-none focus:border-[#39ff14] text-white" required>
-                    
-                    <select id="hora" class="md:col-span-2 w-full p-4 input-dark rounded-xl outline-none text-[#39ff14] font-bold" required>
-                        <option value="" class="text-white">Melhor horário para receber (08:00 - 18:00)</option>
-                        <option value="08:00">08:00</option><option value="09:00">09:00</option>
-                        <option value="10:00">10:00</option><option value="11:00">11:00</option>
-                        <option value="12:00">12:00</option><option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option><option value="15:00">15:00</option>
-                        <option value="16:00">16:00</option><option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
-                    </select>
-
+                    <input type="text" id="bairro" placeholder="Seu Bairro" class="w-full p-4 input-dark rounded-xl text-white" required>
                     <div class="md:col-span-2 text-center py-6">
-                        <div class="text-6xl font-black neon-text mb-2">999 MT</div>
-                        <button type="submit" class="w-full bg-[#39ff14] text-black font-black py-6 rounded-2xl text-2xl hover:scale-105 transition shadow-lg uppercase">
-                            CONFIRMAR PEDIDO AGORA
-                        </button>
+                        <div class="text-6xl font-black neon-text mb-4">999 MT</div>
+                        <button type="submit" id="btnSubmit" class="w-full bg-[#39ff14] text-black font-black py-6 rounded-2xl text-2xl uppercase">CONFIRMAR PEDIDO</button>
                     </div>
                 </form>
             </section>
-
-            <section class="bg-card p-8 rounded-3xl border border-gray-800 shadow-2xl mb-12">
-                <h3 class="text-xl font-bold neon-text mb-8 text-center uppercase">Resultados de Clientes Reais</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-gray-900/50 p-6 rounded-2xl border border-gray-700">
-                        <h4 class="font-bold text-white mb-2">Sr. Alberto M. (Maputo)</h4>
-                        <p class="text-sm text-gray-300 italic">"Após 14 dias o resultado é impressionante. O aumento foi real e a minha parceira está muito satisfeita."</p>
-                        <div class="text-[#39ff14] text-xs mt-2">★★★★★</div>
-                    </div>
-                    <div class="bg-gray-900/50 p-6 rounded-2xl border border-gray-700">
-                        <h4 class="font-bold text-white mb-2">J. Luvumbo (Matola)</h4>
-                        <p class="text-sm text-gray-300 italic">"Entrega discreta e rápida. O produto funciona mesmo para quem sofre de ejaculação precoce."</p>
-                        <div class="text-[#39ff14] text-xs mt-2">★★★★★</div>
-                    </div>
-                </div>
-            </section>
         </main>
         
-        <footer class="text-center p-10 text-gray-700">
-            <button onclick="showAdmin()" class="hover:text-[#39ff14]">Painel Administrativo</button>
+        <footer class="text-center p-10">
+            <button onclick="showAdmin()" class="text-gray-800 text-[10px]">ACESSO DARLING</button>
         </footer>
     </div>
 
-    <div id="admin-area" class="admin-hidden p-8 bg-[#0b0f12] min-h-screen text-black">
+    <div id="admin-area" class="admin-hidden p-8 min-h-screen bg-gray-100 text-black">
         <div class="max-w-6xl mx-auto">
-            <div class="flex justify-between items-center mb-8 border-b border-gray-800 pb-4">
-                <h2 class="text-2xl font-bold text-white uppercase">Gestão de Pedidos (Tempo Real)</h2>
-                <button onclick="hideAdmin()" class="bg-red-600 text-white px-6 py-2 rounded-xl font-bold">SAIR</button>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold uppercase">📋 Pedidos Globais</h2>
+                <button onclick="location.reload()" class="bg-blue-600 text-white px-4 py-2 rounded">Atualizar</button>
             </div>
-            <div class="bg-white rounded-2xl overflow-hidden shadow-2xl overflow-x-auto">
-                <table class="w-full text-left min-w-[600px]">
+            <div class="bg-white rounded shadow-xl overflow-x-auto">
+                <table class="w-full text-left">
                     <thead class="bg-gray-200">
-                        <tr>
-                            <th class="p-4">Cliente</th>
-                            <th class="p-4">Contacto</th>
-                            <th class="p-4">Local/Hora</th>
-                            <th class="p-4 text-center">Estado</th>
-                            <th class="p-4 text-center">Ação</th>
-                        </tr>
+                        <tr><th class="p-4">CLIENTE</th><th class="p-4">CONTACTO</th><th class="p-4">LOCALIZAÇÃO</th><th class="p-4">AÇÃO</th></tr>
                     </thead>
                     <tbody id="adminTable"></tbody>
                 </table>
@@ -119,104 +68,54 @@
     </div>
 
     <script>
-        let pedidos = JSON.parse(localStorage.getItem('vigorFerrozPedidos')) || [];
-        let adminInterval;
+        // Configuração com as tuas chaves do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBBNopVEwgMdmnZDELAdSIAoLOW4tLEyZ8",
+            databaseURL: "https://vigorferroz-default-rtdb.firebaseio.com",
+            projectId: "vigorferroz",
+            appId: "1:263350995456:web:a1b3e080a6bf0de9dc26e5"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-        function atualizarBairroPlaceholder() {
-            const prov = document.getElementById('provincia').value;
-            const campoBairro = document.getElementById('bairro');
-            campoBairro.placeholder = prov ? `Bairro ou Distrito em ${prov}` : "Bairro ou Distrito para entrega";
-        }
-
-        function renderAdmin() {
-            // Recarrega os dados do localStorage para tempo real entre abas
-            pedidos = JSON.parse(localStorage.getItem('vigorFerrozPedidos')) || [];
-            const table = document.getElementById('adminTable');
-            if(!table) return;
-
-            if(pedidos.length === 0) {
-                table.innerHTML = `<tr><td colspan="5" class="p-10 text-center text-gray-400">Nenhum pedido encontrado.</td></tr>`;
-                return;
-            }
-
-            // Criamos uma cópia invertida para o novo aparecer no topo, 
-            // mas guardamos o INDEX ORIGINAL para as funções funcionarem
-            let html = "";
-            for (let i = pedidos.length - 1; i >= 0; i--) {
-                const p = pedidos[i];
-                let statusClass = "status-pendente";
-                if(p.status === "Fechado") statusClass = "status-fechado";
-                if(p.status === "Cancelado") statusClass = "status-cancelado";
-
-                html += `
-                <tr class="border-b">
-                    <td class="p-4 font-bold text-gray-800">${p.nome}</td>
-                    <td class="p-4 text-green-600 font-bold">${p.contacto}</td>
-                    <td class="p-4 text-gray-500 text-[10px] uppercase">${p.local} | <b>${p.hora}</b></td>
-                    <td class="p-4 text-center">
-                        <button onclick="toggleStatus(${i})" class="${statusClass} px-4 py-2 rounded-lg font-black text-[10px] uppercase transition shadow-sm">
-                            ${p.status || 'Pendente'}
-                        </button>
-                    </td>
-                    <td class="p-4 text-center">
-                        <button onclick="apagarPedido(${i})" class="text-red-500 hover:text-red-800">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </td>
-                </tr>`;
-            }
-            table.innerHTML = html;
-        }
-
-        function toggleStatus(index) {
-            const statusAtual = pedidos[index].status || "Pendente";
-            if(statusAtual === "Pendente") pedidos[index].status = "Fechado";
-            else if(statusAtual === "Fechado") pedidos[index].status = "Cancelado";
-            else pedidos[index].status = "Pendente";
-            
-            localStorage.setItem('vigorFerrozPedidos', JSON.stringify(pedidos));
-            renderAdmin();
-        }
-
-        function apagarPedido(index) {
-            if(confirm("Deseja apagar este pedido permanentemente?")) {
-                pedidos.splice(index, 1);
-                localStorage.setItem('vigorFerrozPedidos', JSON.stringify(pedidos));
-                renderAdmin();
-            }
-        }
-
-        document.getElementById('orderForm').onsubmit = function(e) {
+        // Salvar pedido na nuvem
+        document.getElementById('orderForm').onsubmit = async function(e) {
             e.preventDefault();
-            const novo = {
+            const btn = document.getElementById('btnSubmit');
+            btn.disabled = true; btn.innerText = "A ENVIAR...";
+            
+            const pedido = {
                 nome: document.getElementById('nome').value,
                 contacto: document.getElementById('contacto').value,
-                local: `${document.getElementById('provincia').value} - ${document.getElementById('bairro').value}`,
-                hora: document.getElementById('hora').value,
-                status: "Pendente"
+                local: document.getElementById('provincia').value + " - " + document.getElementById('bairro').value,
+                data: Date.now()
             };
-            pedidos.push(novo);
-            localStorage.setItem('vigorFerrozPedidos', JSON.stringify(pedidos));
-            alert("✅ PEDIDO REGISTADO COM SUCESSO!");
-            this.reset();
+
+            try {
+                await db.ref('pedidos').push(pedido);
+                alert("✅ PEDIDO RECEBIDO! Entrega discreta em Maputo em breve.");
+                this.reset();
+            } catch (err) { alert("Erro ao conectar ao banco de dados."); }
+            btn.disabled = false; btn.innerText = "CONFIRMAR PEDIDO";
         };
 
-        function showAdmin() {
-            if(prompt("Digite a senha de acesso:") === "Darling") { 
-                document.getElementById('client-site').classList.add('admin-hidden');
-                document.getElementById('admin-area').classList.remove('admin-hidden');
-                renderAdmin();
-                // Ativa a atualização em tempo real
-                adminInterval = setInterval(renderAdmin, 2000);
-            } else {
-                alert("Senha incorreta!");
-            }
+        function carregarPedidos() {
+            db.ref('pedidos').on('value', (snapshot) => {
+                const table = document.getElementById('adminTable');
+                table.innerHTML = "";
+                snapshot.forEach((child) => {
+                    const p = child.val();
+                    table.innerHTML += `<tr class="border-b"><td class="p-4 font-bold">${p.nome}</td><td class="p-4">${p.contacto}</td><td class="p-4">${p.local}</td><td class="p-4"><button onclick="this.parentElement.parentElement.remove()" class="text-red-600">Apagar</button></td></tr>`;
+                });
+            });
         }
 
-        function hideAdmin() {
-            document.getElementById('client-site').classList.remove('admin-hidden');
-            document.getElementById('admin-area').classList.add('admin-hidden');
-            clearInterval(adminInterval);
+        function showAdmin() {
+            if(prompt("Senha de Acesso:") === "Darling") {
+                document.getElementById('client-site').classList.add('admin-hidden');
+                document.getElementById('admin-area').classList.remove('admin-hidden');
+                carregarPedidos();
+            }
         }
     </script>
 </body>
