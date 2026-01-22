@@ -14,52 +14,53 @@
         .admin-hidden { display: none; }
         .bg-card { background-color: #161b22; }
         .input-dark { background-color: #0d1117; border: 1px solid #30363d; }
+        /* CORES DO STATUS */
+        .status-pendente { background-color: #fbbf24; color: #000; padding: 4px 8px; rounded: 4px; font-weight: bold; }
+        .status-concluido { background-color: #22c55e; color: #fff; padding: 4px 8px; rounded: 4px; font-weight: bold; }
     </style>
 </head>
 <body>
     <div id="client-site">
         <header class="py-10 text-center border-b border-gray-800">
             <h1 class="text-5xl font-black neon-text uppercase">VIGOR FERROZ</h1>
-            <p class="text-gray-400 mt-2">Solução 100% natural com resultados em 14 dias!</p>
+            <p class="text-gray-400 mt-2">100% natural | Resultados em 14 dias!</p>
         </header>
-
         <main class="max-w-4xl mx-auto p-4">
             <section class="mt-8 bg-card p-8 rounded-3xl border border-gray-800 shadow-2xl">
-                <h2 class="text-center text-3xl font-bold text-[#39ff14] mb-8">ENCOMENDAR AGORA</h2>
+                <h2 class="text-center text-3xl font-bold text-[#39ff14] mb-8 uppercase">Encomendar Agora</h2>
                 <form id="orderForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="nome" placeholder="Seu Nome" class="w-full p-4 input-dark rounded-xl text-white" required>
-                    <input type="number" id="contacto" placeholder="Seu Contacto" class="w-full p-4 input-dark rounded-xl text-white" required>
+                    <input type="text" id="nome" placeholder="Nome Completo" class="w-full p-4 input-dark rounded-xl text-white" required>
+                    <input type="number" id="contacto" placeholder="Contacto M-Pesa/mKesh" class="w-full p-4 input-dark rounded-xl text-white" required>
                     <select id="provincia" class="w-full p-4 input-dark rounded-xl text-white" required>
-                        <option value="">Sua Província...</option>
+                        <option value="">Província...</option>
                         <option>Maputo Cidade</option><option>Maputo Província</option><option>Gaza</option>
                         <option>Inhambane</option><option>Sofala</option><option>Manica</option>
                         <option>Tete</option><option>Zambézia</option><option>Nampula</option>
                         <option>Niassa</option><option>Cabo Delgado</option>
                     </select>
-                    <input type="text" id="bairro" placeholder="Seu Bairro" class="w-full p-4 input-dark rounded-xl text-white" required>
+                    <input type="text" id="bairro" placeholder="Bairro de Entrega" class="w-full p-4 input-dark rounded-xl text-white" required>
                     <div class="md:col-span-2 text-center py-6">
                         <div class="text-6xl font-black neon-text mb-4">999 MT</div>
-                        <button type="submit" id="btnSubmit" class="w-full bg-[#39ff14] text-black font-black py-6 rounded-2xl text-2xl uppercase">CONFIRMAR PEDIDO</button>
+                        <button type="submit" id="btnSubmit" class="w-full bg-[#39ff14] text-black font-black py-6 rounded-2xl text-2xl">CONFIRMAR PEDIDO</button>
                     </div>
                 </form>
             </section>
         </main>
-        
         <footer class="text-center p-10">
-            <button onclick="showAdmin()" class="text-gray-800 text-[10px]">ACESSO DARLING</button>
+            <button onclick="showAdmin()" class="text-gray-800 text-[10px] uppercase">Acesso Darling</button>
         </footer>
     </div>
 
     <div id="admin-area" class="admin-hidden p-8 min-h-screen bg-gray-100 text-black">
         <div class="max-w-6xl mx-auto">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold uppercase">📋 Pedidos Globais</h2>
-                <button onclick="location.reload()" class="bg-blue-600 text-white px-4 py-2 rounded">Atualizar</button>
+                <h2 class="text-2xl font-bold uppercase">📋 Gestão de Pedidos (Nuvem)</h2>
+                <button onclick="hideAdmin()" class="bg-black text-white px-4 py-2 rounded">Voltar ao Site</button>
             </div>
             <div class="bg-white rounded shadow-xl overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="bg-gray-200">
-                        <tr><th class="p-4">CLIENTE</th><th class="p-4">CONTACTO</th><th class="p-4">LOCALIZAÇÃO</th><th class="p-4">AÇÃO</th></tr>
+                        <tr><th class="p-4">CLIENTE</th><th class="p-4">CONTACTO</th><th class="p-4">LOCAL</th><th class="p-4">STATUS</th><th class="p-4">AÇÃO</th></tr>
                     </thead>
                     <tbody id="adminTable"></tbody>
                 </table>
@@ -68,7 +69,6 @@
     </div>
 
     <script>
-        // Configuração com as tuas chaves do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBBNopVEwgMdmnZDELAdSIAoLOW4tLEyZ8",
             databaseURL: "https://vigorferroz-default-rtdb.firebaseio.com",
@@ -78,24 +78,22 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Salvar pedido na nuvem
         document.getElementById('orderForm').onsubmit = async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSubmit');
             btn.disabled = true; btn.innerText = "A ENVIAR...";
-            
             const pedido = {
                 nome: document.getElementById('nome').value,
                 contacto: document.getElementById('contacto').value,
                 local: document.getElementById('provincia').value + " - " + document.getElementById('bairro').value,
+                status: "Pendente",
                 data: Date.now()
             };
-
             try {
                 await db.ref('pedidos').push(pedido);
-                alert("✅ PEDIDO RECEBIDO! Entrega discreta em Maputo em breve.");
+                alert("✅ PEDIDO REGISTADO!");
                 this.reset();
-            } catch (err) { alert("Erro ao conectar ao banco de dados."); }
+            } catch (err) { alert("Erro de conexão."); }
             btn.disabled = false; btn.innerText = "CONFIRMAR PEDIDO";
         };
 
@@ -105,17 +103,40 @@
                 table.innerHTML = "";
                 snapshot.forEach((child) => {
                     const p = child.val();
-                    table.innerHTML += `<tr class="border-b"><td class="p-4 font-bold">${p.nome}</td><td class="p-4">${p.contacto}</td><td class="p-4">${p.local}</td><td class="p-4"><button onclick="this.parentElement.parentElement.remove()" class="text-red-600">Apagar</button></td></tr>`;
+                    const id = child.key;
+                    const btnClass = p.status === "Pendente" ? "status-pendente" : "status-concluido";
+                    table.innerHTML += `<tr class="border-b">
+                        <td class="p-4 font-bold">${p.nome}</td>
+                        <td class="p-4">${p.contacto}</td>
+                        <td class="p-4">${p.local}</td>
+                        <td class="p-4">
+                            <button onclick="mudarStatus('${id}', '${p.status}')" class="${btnClass}">${p.status}</button>
+                        </td>
+                        <td class="p-4"><button onclick="apagar('${id}')" class="text-red-600">Apagar</button></td>
+                    </tr>`;
                 });
             });
         }
 
+        async function mudarStatus(id, atual) {
+            const novo = atual === "Pendente" ? "Concluído" : "Pendente";
+            await db.ref('pedidos/' + id).update({ status: novo });
+        }
+
+        async function apagar(id) {
+            if(confirm("Apagar este pedido para sempre?")) await db.ref('pedidos/' + id).remove();
+        }
+
         function showAdmin() {
-            if(prompt("Senha de Acesso:") === "Darling") {
+            if(prompt("Senha:") === "Darling") {
                 document.getElementById('client-site').classList.add('admin-hidden');
                 document.getElementById('admin-area').classList.remove('admin-hidden');
                 carregarPedidos();
             }
+        }
+        function hideAdmin() {
+            document.getElementById('client-site').classList.remove('admin-hidden');
+            document.getElementById('admin-area').classList.add('admin-hidden');
         }
     </script>
 </body>
