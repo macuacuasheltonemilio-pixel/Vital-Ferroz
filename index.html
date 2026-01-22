@@ -3,67 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIGOR FERROZ | Oficial</title>
+    <title>VIGOR FERROZ | Oficial Moçambique</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     <style>
-        body { background-color: #0b0f12; color: white; font-family: sans-serif; }
+        body { background-color: #0b0f12; color: white; scroll-behavior: smooth; font-family: sans-serif; }
         .neon-text { color: #39ff14; text-shadow: 0 0 10px #39ff14; }
         .admin-hidden { display: none; }
-        .bg-card { background-color: #161b22; border: 1px solid #30363d; }
-        .input-dark { background-color: #0d1117; border: 1px solid #30363d; color: white; }
-        /* CORES DE STATUS SOLICITADAS */
-        .status-pendente { background-color: #fbbf24; color: black; } /* Amarelo */
-        .status-confirmado { background-color: #22c55e; color: white; } /* Verde */
-        .status-cancelado { background-color: #ef4444; color: white; } /* Vermelho */
+        .bg-card { background-color: #161b22; }
+        .input-dark { background-color: #0d1117; border: 1px solid #30363d; }
+        /* CORES DE STATUS CORRIGIDAS */
+        .status-confirmado { background-color: #22c55e; color: white; } /* VERDE */
+        .status-pendente { background-color: #eab308; color: black; }   /* AMARELO */
+        .status-cancelado { background-color: #ef4444; color: white; }  /* VERMELHO */
     </style>
 </head>
 <body>
     <div id="client-site">
         <header class="py-10 text-center border-b border-gray-800">
             <h1 class="text-5xl font-black neon-text uppercase tracking-tighter">VIGOR FERROZ</h1>
-            <p class="text-gray-400 mt-2 font-medium">100% Natural | Resultados em 14 dias | +12cm</p>
+            <p class="text-gray-400 mt-2 font-medium italic">Resultados em apenas 14 dias de uso correto!</p>
         </header>
-
         <main class="max-w-4xl mx-auto p-4">
-            <section class="mt-8 bg-card p-8 rounded-3xl shadow-2xl mb-8">
+            <section class="mt-8 bg-card p-8 rounded-3xl border border-gray-800 shadow-2xl mb-8">
                 <h2 class="text-center text-3xl font-bold text-[#39ff14] mb-8 uppercase italic">Fazer Encomenda</h2>
-                <form id="orderForm" class="space-y-4">
-                    <input type="text" id="nome" placeholder="Nome Completo" class="w-full p-4 input-dark rounded-xl outline-none" required>
-                    <input type="number" id="contacto" placeholder="Seu Número de Contacto" class="w-full p-4 input-dark rounded-xl outline-none" required>
-                    <div class="grid grid-cols-2 gap-4">
-                        <select id="provincia" class="p-4 input-dark rounded-xl outline-none" required>
-                            <option value="">Província...</option>
-                            <option>Maputo Cidade</option><option>Maputo Província</option>
-                            <option>Gaza</option><option>Inhambane</option>
-                        </select>
-                        <input type="text" id="bairro" placeholder="Bairro" class="p-4 input-dark rounded-xl outline-none" required>
-                    </div>
-                    <div class="text-center py-6">
-                        <div class="text-6xl font-black neon-text mb-4">999 MT</div>
+                <form id="orderForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="nome" placeholder="Nome Completo" class="w-full p-4 input-dark rounded-xl outline-none text-white" required>
+                    <input type="number" id="contacto" placeholder="Contacto" class="w-full p-4 input-dark rounded-xl outline-none text-white" required>
+                    <select id="provincia" class="w-full p-4 input-dark rounded-xl outline-none text-white" required>
+                        <option value="">Província...</option>
+                        <option>Maputo Cidade</option><option>Maputo Província</option><option>Gaza</option>
+                        <option>Inhambane</option><option>Sofala</option><option>Manica</option>
+                        <option>Tete</option><option>Zambézia</option><option>Nampula</option>
+                        <option>Niassa</option><option>Cabo Delgado</option>
+                    </select>
+                    <input type="text" id="bairro" placeholder="Bairro para Entrega" class="w-full p-4 input-dark rounded-xl outline-none text-white" required>
+                    <div class="md:col-span-2 text-center py-6">
+                        <div class="text-6xl font-black neon-text mb-2">999 MT</div>
+                        <p class="text-gray-400 mb-6 text-sm italic">Entrega completamente discreta em Maputo.</p>
                         <button type="submit" id="btnSubmit" class="w-full bg-[#39ff14] text-black font-black py-6 rounded-2xl text-2xl uppercase hover:scale-105 transition">CONFIRMAR PEDIDO</button>
                     </div>
                 </form>
             </section>
         </main>
-        <footer class="text-center p-10">
-            <button onclick="showAdmin()" class="text-gray-800 hover:text-gray-400 text-[10px] uppercase">Painel de Controlo</button>
-        </footer>
+        <footer class="text-center p-10"><button onclick="showAdmin()" class="text-gray-800 hover:text-[#39ff14] text-[10px] uppercase">Acesso Darling</button></footer>
     </div>
 
-    <div id="admin-area" class="admin-hidden p-4 bg-gray-900 min-h-screen">
+    <div id="admin-area" class="admin-hidden p-8 bg-[#0b0f12] min-h-screen">
         <div class="max-w-6xl mx-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-white uppercase">Gestão de Pedidos</h2>
-                <button onclick="hideAdmin()" class="bg-white text-black px-4 py-1 rounded-lg font-bold">SAIR</button>
+            <div class="flex justify-between items-center mb-8 border-b border-gray-800 pb-4">
+                <h2 class="text-2xl font-bold text-white uppercase italic">📦 GESTÃO DE PEDIDOS</h2>
+                <button onclick="hideAdmin()" class="bg-red-600 text-white px-6 py-2 rounded-xl font-bold uppercase">Sair</button>
             </div>
-            <div class="bg-white rounded-xl overflow-hidden shadow-2xl overflow-x-auto text-black">
-                <table class="w-full text-left">
-                    <thead class="bg-gray-200 text-xs font-black">
-                        <tr><th class="p-4">CLIENTE</th><th class="p-4">CONTACTO</th><th class="p-4">LOCAL</th><th class="p-4">STATUS</th><th class="p-4">AÇÃO</th></tr>
-                    </thead>
+            <div class="bg-white rounded-2xl overflow-hidden shadow-2xl overflow-x-auto">
+                <table class="w-full text-left min-w-[600px] text-black">
+                    <thead class="bg-gray-200 text-xs"><tr><th class="p-4">CLIENTE</th><th class="p-4">CONTACTO</th><th class="p-4">LOCAL</th><th class="p-4">ESTADO</th><th class="p-4">AÇÃO</th></tr></thead>
                     <tbody id="adminTable"></tbody>
                 </table>
             </div>
@@ -83,7 +79,7 @@
         document.getElementById('orderForm').onsubmit = async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSubmit');
-            btn.disabled = true; btn.innerText = "ENVIANDO...";
+            btn.disabled = true; btn.innerText = "A ENVIAR...";
             const pedido = {
                 nome: document.getElementById('nome').value,
                 contacto: document.getElementById('contacto').value,
@@ -93,9 +89,9 @@
             };
             try {
                 await db.ref('pedidos').push(pedido);
-                alert("✅ PEDIDO RECEBIDO COM SUCESSO!");
+                alert("✅ ENCOMENDA RECEBIDA!");
                 this.reset();
-            } catch (err) { alert("Erro de conexão."); }
+            } catch (error) { alert("Erro de conexão."); }
             btn.disabled = false; btn.innerText = "CONFIRMAR PEDIDO";
         };
 
@@ -106,18 +102,16 @@
                 snapshot.forEach((child) => {
                     const p = child.val(); const id = child.key;
                     let sClass = p.status === "Confirmado" ? "status-confirmado" : (p.status === "Cancelado" ? "status-cancelado" : "status-pendente");
-                    table.innerHTML += `<tr class="border-b"><td class="p-4 font-bold text-sm">${p.nome}</td><td class="p-4 text-green-700 font-bold">${p.contacto}</td><td class="p-4 text-[10px] uppercase">${p.local}</td><td class="p-4"><button onclick="mudarStatus('${id}', '${p.status}')" class="${sClass} px-3 py-1 rounded-full text-[10px] font-black uppercase shadow-sm">${p.status}</button></td><td class="p-4"><button onclick="apagar('${id}')" class="text-red-500"><i class="fas fa-trash"></i></button></td></tr>`;
+                    table.innerHTML += `<tr class="border-b"><td class="p-4 font-bold uppercase text-sm">${p.nome}</td><td class="p-4 font-bold text-blue-700">${p.contacto}</td><td class="p-4 text-[10px] uppercase">${p.local}</td><td class="p-4"><button onclick="mudarStatus('${id}','${p.status}')" class="${sClass} px-3 py-1 rounded-full text-[10px] font-black uppercase shadow-sm">${p.status}</button></td><td class="p-4"><button onclick="apagar('${id}')" class="text-gray-400 hover:text-red-500"><i class="fas fa-trash"></i></button></td></tr>`;
                 });
             });
         }
-
-        async function mudarStatus(id, atual) {
-            let novo = atual === "Pendente" ? "Confirmado" : (atual === "Confirmado" ? "Cancelado" : "Pendente");
-            await db.ref('pedidos/' + id).update({ status: novo });
+        async function mudarStatus(id, s) { 
+            let n = s === "Pendente" ? "Confirmado" : (s === "Confirmado" ? "Cancelado" : "Pendente"); 
+            await db.ref('pedidos/'+id).update({status:n}); 
         }
-
-        async function apagar(id) { if(confirm("Apagar pedido?")) await db.ref('pedidos/' + id).remove(); }
-        function showAdmin() { if(prompt("Senha:") === "Darling") { document.getElementById('client-site').classList.add('admin-hidden'); document.getElementById('admin-area').classList.remove('admin-hidden'); carregarPedidos(); } }
+        async function apagar(id) { if(confirm("Apagar este pedido permanentemente?")) await db.ref('pedidos/'+id).remove(); }
+        function showAdmin() { if(prompt("Senha de Administrador:") === "Darling") { document.getElementById('client-site').classList.add('admin-hidden'); document.getElementById('admin-area').classList.remove('admin-hidden'); carregarPedidos(); } }
         function hideAdmin() { document.getElementById('client-site').classList.remove('admin-hidden'); document.getElementById('admin-area').classList.add('admin-hidden'); }
     </script>
 </body>
